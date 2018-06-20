@@ -1,0 +1,53 @@
+body{
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+}
+
+
+h1{
+    margin-left: 30px;
+    margin-top: 50px;
+    font-weight: bold;
+    color: rgba(115, 79, 151, 1);
+}
+
+li{
+    color: #545454;
+    padding: 30px;
+}
+
+button{
+    padding-left: 20px;
+}
+
+label{
+    padding: 10px;
+    font-size: 1.6rem;
+}
+
+.mdl-checkbox{
+    margin-left: 320px;
+    margin-top: -30px;
+}
+
+.mdl-card{
+    height: 100px;
+}
+
+.delete{
+    margin-top: 40px;
+}
+
+.mdl-list__item{
+    min-width: 300px;
+}
+
+#addToDoForm{
+    margin-left: 30px;
+    padding-bottom: 30px;
+}
+
+#newToDoText{
+    height: 30px;
+    width: 200px;
+}
