@@ -1,61 +1,75 @@
 function onReady() {
+    console.log('onReady');
+    let id = 0
+    let toDos = [];
+
+    if (localStorage.getItem('toDosArray')) {
+      toDos = JSON.parse(localStorage.getItem('toDosArray'));
+    }
+console.log(toDos);
     const addToDoForm = document.getElementById('addToDoForm');
-    const newToDoText = document.getElementById('newToDoText');
-    const toDoList = document.getElementById('toDoList');
+
+    // pushes the text field you entered into an array
+    function createNewToDo(){
+        console.log('createNewToDo method hit');
+        const newToDoText = document.getElementById('newToDoText');
+        toDos.push({
+            title: newToDoText.value,
+            complete: true,
+            id: id++
+        });
+        newToDoText.value = '';
+        renderTheUI();
+    }
+
+    function renderTheUI() {
+        const toDoList = document.getElementById('toDoList');
+
+        toDoList.textContent = '';
+        // creates a li an checkbox and a delete button when you create an to do list item
+        toDos.forEach(toDo => {
+            const newLi = document.createElement('li');
+            const checkbox = document.createElement('input');
+            const deleteButton = document.createElement('button');
+
+            checkbox.type = "checkbox";
+            newLi.textContent = toDo.title;
+            toDoList.appendChild(newLi);
+            newLi.appendChild(checkbox);
+            newLi.appendChild(deleteButton);
+
+            newLi.className += "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col";
+            deleteButton.className += "delete mdl-button mdl-button--raised mdl-button--colored"
+            checkbox.className +="mdl-checkbox";
+            checkbox.checked = toDo.complete;
+            console.log(checkbox.value);
+
+            deleteButton.textContent = "Delete";
+
+            //returns toDos that haven't been deleted
+            deleteButton.addEventListener('click', event => {
+                toDos = toDos.filter( dtd => {
+                    return toDo.id !== dtd.id;
+
+                })
+                renderTheUI();
+            });
+            //see if checkbox is checked
+            checkbox.addEventListener('change', event => {
+            toDo.complete = event.target.checked
+                localStorage.setItem('toDosArray', JSON.stringify(toDos));
+            });
+        });
+        //stringifies ToDos
+        localStorage.setItem('toDosArray', JSON.stringify(toDos));
+    }
+    renderTheUI();
 
     addToDoForm.addEventListener('submit', event => {
         event.preventDefault();
-
-        // get the text
-        let title = newToDoText.value;
-
-        //create a new li
-        let newLi = document.createElement('li');
-
-        // create a new input
-        let checkbox = document.createElement('input');
-
-        // create a delete button
-        let deleteButton = document.createElement('button');
-
-        let label = document.createElement('label');
-
-        deleteButton.textContent = ('delete');
-
-        //set the input type
-        checkbox.type = "checkbox";
-
-        //set the title
-        //newLi.textContent = title;
-
-        label.textContent = title;
-
-        newLi.appendChild(label);
-
-        //attach the checkbox to the li
-        newLi.appendChild(checkbox);
-
-        toDoList.appendChild(newLi);
-
-        //add delete button to the li
-        newLi.appendChild(deleteButton);
-
-        newLi.className += "mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col";
-
-        checkbox.className +="mdl-checkbox";
-
-        deleteButton.className += "delete mdl-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored";
-
-        //empty the input
-        newToDoText.value = '';
-
-        //add event listener when delete button is pressed
-        deleteButton.addEventListener('click', event => {
-            toDoList.removeChild(newLi);
-        });
+        createNewToDo();
     });
-};
-
+}
 window.onload = function(){
     onReady();
-};
+}
