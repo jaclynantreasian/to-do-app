@@ -15,7 +15,7 @@ console.log(toDos);
         const newToDoText = document.getElementById('newToDoText');
         toDos.push({
             title: newToDoText.value,
-            complete: true,
+            complete: false,
             id: id++
         });
         newToDoText.value = '';
